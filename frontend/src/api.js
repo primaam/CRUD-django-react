@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "./constant";
 
-const baseURL = process.env.API_URL;
+const baseURL = process.env.REACT_APP_API_URL;
 
 const api = axios.create({
     baseURL: baseURL,
