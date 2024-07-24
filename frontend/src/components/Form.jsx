@@ -5,7 +5,7 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constant";
 import "../styles/Form.css";
 import useFormInput from "../hooks/useFormInput";
 
-const Form = ({ route, method }) => {
+const Form = ({ route, method, onSubmit, onInputChange }) => {
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [loading, setLoading] = React.useState(false);
@@ -47,12 +47,13 @@ const Form = ({ route, method }) => {
                 type="text"
                 name="username"
                 value={username}
-                onChange={(e) => setUsername(e)}
+                onChange={(e) => setUsername(e.target.value)}
                 placeholder="Username"
             />
             <input
                 className="form-input"
                 type="password"
+                name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
