@@ -5,61 +5,64 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constant";
 import "../styles/Form.css";
 import useFormInput from "../hooks/useFormInput";
 
-const Form = ({ route, method, onSubmit, onInputChange }) => {
-    const [username, setUsername] = React.useState("");
-    const [password, setPassword] = React.useState("");
-    const [loading, setLoading] = React.useState(false);
+const Form = ({ onSubmit, formTitle, formData }) => {
+    const { form, handleFormChange } = useFormInput();
 
-    const navigate = useNavigate();
-    const formInput = useFormInput({
-        username: "",
-        password: "",
-    });
+    // const handleSubmit = async (e) => {
+    //     setLoading(true);
+    //     e.preventDefault();
 
-    const name = method === "login" ? "Login" : "Register";
-
-    const handleSubmit = async (e) => {
-        setLoading(true);
-        e.preventDefault();
-
-        try {
-            const res = await api.post(route, { username, password });
-            if (method === "login") {
-                localStorage.setItem(ACCESS_TOKEN, res.data.access);
-                localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-                navigate("/");
-            } else {
-                navigate("/login");
-            }
-        } catch (error) {
-            console.log("error", error);
-            alert(error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    //     try {
+    //         const res = await api.post(route, form);
+    //         if (method === "login") {
+    //             localStorage.setItem(ACCESS_TOKEN, res.data.access);
+    //             localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+    //             navigate("/");
+    //         } else {
+    //             navigate("/login");
+    //         }
+    //     } catch (error) {
+    //         console.log("error", error);
+    //         alert(error);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
 
     return (
-        <form onSubmit={handleSubmit} className="form-container">
-            <h1>{name}</h1>
-            <input
+        <form onSubmit={onSubmit} className="form-container">
+            <h1>{formTitle}</h1>
+            {formData.map((item, i) => {
+                return (
+                    <input
+                        key={i}
+                        className="form-input"
+                        type={item.type}
+                        name={item.name}
+                        value={form[item.name]}
+                        onChange={(e) => handleFormChange(e)}
+                        placeholder={item.placeholder}
+                    />
+                );
+            })}
+            {/* <input
                 className="form-input"
                 type="text"
                 name="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={form.username}
+                onChange={(e) => handleFormChange(e)}
                 placeholder="Username"
             />
             <input
                 className="form-input"
                 type="password"
                 name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={form.password}
+                onChange={(e) => handleFormChange(e)}
                 placeholder="Password"
-            />
+            /> */}
             <button className="form-button" type="submit">
-                {name}
+                {formTitle}
             </button>
         </form>
     );

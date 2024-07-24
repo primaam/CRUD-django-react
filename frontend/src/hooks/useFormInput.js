@@ -1,20 +1,13 @@
 import React from "react";
 
-const useFormInput = ({ initialState }) => {
-    const init =
-        initialState != undefined
-            ? initialState
-            : {
-                  username: "",
-                  password: "",
-              };
-
-    const [form, setForm] = React.useState(init);
+const useFormInput = () => {
+    const [form, setForm] = React.useState({});
 
     const handleFormChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
+    console.log("form", form);
     return { form, handleFormChange };
 };
 
