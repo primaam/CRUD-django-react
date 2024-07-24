@@ -3,6 +3,7 @@ import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constant";
 import "../styles/Form.css";
+import useFormInput from "../hooks/useFormInput";
 
 const Form = ({ route, method }) => {
     const [username, setUsername] = React.useState("");
@@ -10,6 +11,10 @@ const Form = ({ route, method }) => {
     const [loading, setLoading] = React.useState(false);
 
     const navigate = useNavigate();
+    const formInput = useFormInput({
+        username: "",
+        password: "",
+    });
 
     const name = method === "login" ? "Login" : "Register";
 
@@ -40,8 +45,9 @@ const Form = ({ route, method }) => {
             <input
                 className="form-input"
                 type="text"
+                name="username"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => setUsername(e)}
                 placeholder="Username"
             />
             <input
