@@ -5,50 +5,53 @@ import { useNavigate } from "react-router-dom";
 import useFormSubmit from "../hooks/useFormSubmit";
 import useFormInput from "../hooks/useFormInput";
 
+const formData = [
+    {
+        name: "username",
+        type: "text",
+        placeholder: "Username",
+    },
+    {
+        name: "password",
+        type: "password",
+        placeholder: "Password",
+    },
+    {
+        name: "repassword",
+        type: "password",
+        placeholder: "Repeat Password",
+    },
+];
+
+const initialFormState = {
+    username: "",
+    password: "",
+    repassword: "",
+};
+
 const Register = () => {
-    const [dataRegist, setDataRegist] = React.useState({
-        username: "",
-        password: "",
-        repassword: "",
-    });
     const [loading, setLoading] = React.useState(false);
 
-    const { form, handleFormChange } = useFormInput();
     const { handleSubmit } = useFormSubmit();
+    const { form, handleFormChange } = useFormInput(initialFormState);
     const navigate = useNavigate();
 
-    const formData = [
-        {
-            name: "username",
-            type: "text",
-            placeholder: "Username",
-        },
-        {
-            name: "password",
-            type: "password",
-            placeholder: "Password",
-        },
-        {
-            name: "repassword",
-            type: "password",
-            placeholder: "Repeat Password",
-        },
-    ];
-
-    console.log("form regist", form);
-    const handleRegist = (e) => {
+    const handleRegist = async (e) => {
         e.preventDefault();
         setLoading(true);
         try {
             if (form.password === form.repassword) {
-                const res = handleSubmit({
-                    data: { username: form.username, password: form.password },
-                    route: "register",
-                });
+                const payload = {
+                    username: form.username,
+                    password: form.password,
+                };
+                const res = await handleSubmit({ data: payload, route: "register" });
 
                 res.status === 201 || res.status === 200
                     ? navigate("/login")
                     : alert("Registration failed. Please try again.");
+            } else {
+                alert("Registration failed. Please try again.");
             }
         } catch (error) {
             console.log("Error during registration", error);
@@ -56,14 +59,18 @@ const Register = () => {
             setLoading(false);
         }
     };
+
     return (
-        <Form
-            onSubmit={handleRegist}
-            formData={formData}
-            formTitle={"Register"}
-            route={"/api/user/register/"}
-            method={"register"}
-        />
+        <>
+            <Form
+                loading={loading}
+                data={form}
+                onChange={(e) => handleFormChange(e)}
+                onSubmit={handleRegist}
+                formData={formData}
+                formTitle={"Register"}
+            />
+        </>
     );
 };
 

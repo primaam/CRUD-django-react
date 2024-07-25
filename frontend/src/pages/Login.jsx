@@ -7,28 +7,33 @@ import { useNavigate } from "react-router-dom";
 import useFormSubmit from "../hooks/useFormSubmit";
 import useFormInput from "../hooks/useFormInput";
 
+const formData = [
+    {
+        name: "username",
+        type: "text",
+        placeholder: "Username",
+    },
+    {
+        name: "password",
+        type: "password",
+        placeholder: "Password",
+    },
+];
+
+const initialFormState = {
+    username: "",
+    password: "",
+};
+
 const Login = () => {
     const [loading, setLoading] = React.useState(false);
 
-    const { form } = useFormInput();
+    const { form, handleFormChange } = useFormInput(initialFormState);
     const { handleSubmit } = useFormSubmit();
     const navigate = useNavigate();
 
-    const formData = [
-        {
-            name: "username",
-            type: "text",
-            placeholder: "Username",
-        },
-        {
-            name: "password",
-            type: "password",
-            placeholder: "Password",
-        },
-    ];
-
-    console.log("formlogin", form);
-    const handleLogin = async () => {
+    const handleLogin = async (e) => {
+        e.preventDefault();
         setLoading(true);
         try {
             const res = await handleSubmit({ data: form, route: "login" });
@@ -46,11 +51,12 @@ const Login = () => {
     return (
         <>
             <Form
+                loading={loading}
                 onSubmit={handleLogin}
                 formData={formData}
+                data={form}
                 formTitle={"Login"}
-                route={"/api/token/"}
-                method={"login"}
+                onChange={(e) => handleFormChange(e)}
             />
         </>
     );

@@ -41,7 +41,6 @@ const ProtectedRoute = ({ children }) => {
         const tokenExpiration = decoded.exp;
 
         const now = Date.now() / 1000;
-
         if (tokenExpiration < now) {
             await refreshToken();
         } else {
