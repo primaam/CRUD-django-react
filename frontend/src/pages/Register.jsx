@@ -2,8 +2,7 @@ import React from "react";
 import { Form } from "../components";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constant";
 import { useNavigate } from "react-router-dom";
-import useFormSubmit from "../hooks/useFormSubmit";
-import useFormInput from "../hooks/useFormInput";
+import { useFormInput, useFormSubmit } from "../hooks";
 
 const formData = [
     {
